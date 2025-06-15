@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mock Patient UI</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    input, button { margin: 0.5em 0; padding: 0.5em; width: 100%; max-width: 300px; }
+    table { margin-top: 2em; border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 0.5em; text-align: left; }
+    th { background-color: #f4f4f4; }
+    .actions button { margin-right: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Mock Health Data - Add/Edit Patient</h1>
+  <form id="patientForm">
+    <input type="text" name="patient_id" placeholder="Patient ID" required><br>
+    <input type="number" name="age" placeholder="Age" required><br>
+    <input type="text" name="sex" placeholder="Sex (e.g. Male, Female)" required><br>
+    <input type="number" step="0.1" name="BMI" placeholder="BMI" required><br>
+    <input type="text" name="diagnosis_code" placeholder="Diagnosis Code (e.g. I50)" required><br>
+    <input type="text" name="blood_pressure" placeholder="Blood Pressure (e.g. 120/80)" required><br>
+    <input type="number" step="0.1" name="cholesterol_level" placeholder="Cholesterol Level" required><br>
+    <label><input type="checkbox" name="sample_taken"> Sample Taken</label><br>
+    <button type="submit">Save Patient</button>
+    <button type="button" id="clearForm">Clear</button>
+  </form>
+
+  <h2>Existing Patients</h2>
+  <table id="patientTable">
+    <thead>
+      <tr>
+        <th>ID</th><th>Age</th><th>Sex</th><th>BMI</th><th>Diagnosis</th><th>Sample</th><th>BP</th><th>Cholesterol</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const form = document.getElementById('patientForm');
+    const tableBody = document.querySelector('#patientTable tbody');
+    const clearBtn = document.getElementById('clearForm');
+    const apiBase = 'http://127.0.0.1:8000';
+
+    function fetchPatients() {
+      fetch(`${apiBase}/patients`).then(res => res.json()).then(patients => {
+        tableBody.innerHTML = '';
+        patients.forEach(p => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${p.patient_id}</td><td>${p.age}</td><td>${p.sex}</td>
+            <td>${p.BMI}</td><td>${p.diagnosis_code}</td><td>${p.sample_taken}</td>
+            <td>${p.blood_pressure}</td><td>${p.cholesterol_level}</td>
+            <td class="actions">
+              <button onclick='editPatient(${JSON.stringify(p)})'>Edit</button>
+              <button onclick='deletePatient("${p.patient_id}")'>Delete</button>
+            </td>`;
+          tableBody.appendChild(row);
+        });
+      });
+    }
+
+    function editPatient(p) {
+	  form.patient_id.readOnly = true;  // lock it during edit
+      form.patient_id.value = p.patient_id;
+      form.age.value = p.age;
+      form.sex.value = p.sex;
+      form.BMI.value = p.BMI;
+      form.diagnosis_code.value = p.diagnosis_code;
+      form.blood_pressure.value = p.blood_pressure;
+      form.cholesterol_level.value = p.cholesterol_level;
+      form.sample_taken.checked = p.sample_taken;
+    }
+
+    function deletePatient(patient_id) {
+      if (!confirm(`Delete patient ${patient_id}?`)) return;
+      fetch(`${apiBase}/patients/${patient_id}`, { method: 'DELETE' })
+        .then(res => {
+          if (res.ok) fetchPatients();
+          else alert('Failed to delete patient');
+        });
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.sample_taken = form.sample_taken.checked;
+      data.age = parseInt(data.age);
+      data.BMI = parseFloat(data.BMI);
+      data.cholesterol_level = parseFloat(data.cholesterol_level);
+
+      const method = form.patient_id.readOnly ? 'PUT' : 'POST';
+	  const url = method === 'POST'
+		? `${apiBase}/patients`
+		: `${apiBase}/patients/${data.patient_id}`;
+
+		fetch(url, {		
+			method: method,
+
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(res => {
+        if (res.ok) {
+          fetchPatients();
+        } else {
+          res.json().then(d => alert(d.detail || 'Failed to save patient'));
+        }
+      });
+    });
+
+    clearBtn.addEventListener('click', () => {
+      form.reset();
+      form.patient_id.readOnly = false;
+    });
+
+    fetchPatients();
+  </script>
+</body>
+</html>
