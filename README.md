@@ -49,7 +49,7 @@ ui_test_actions.log — Playwright test steps
 Author
 
 Jake (UK-based software tester) 
-Interview-ready demonstration build in June 2025 
+Interview-ready demonstration built in June 2025 
 Python • FastAPI • Playwright • Jupyter
 
 
