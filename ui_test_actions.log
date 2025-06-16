@@ -1,0 +1,6 @@
+2025-06-16 10:47:24,252 - INFO - Test start: Adding patient TEST999
+2025-06-16 10:47:27,831 - INFO - \u2705 Successfully added patient TEST999
+2025-06-16 10:47:36,680 - INFO - Test start: Editing patient TEST999 \u2192 age=52, BMI=27.2
+2025-06-16 10:47:38,418 - INFO - \u2705 Successfully edited patient TEST999
+2025-06-16 10:47:43,969 - INFO - Test start: Deleting patient TEST999
+2025-06-16 10:47:46,066 - INFO - \u2705 Successfully deleted patient TEST999

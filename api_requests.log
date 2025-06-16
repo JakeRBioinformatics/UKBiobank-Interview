@@ -1,0 +1,15 @@
+2025-06-16 10:40:11,842 - INFO - HTTP Request: GET http://127.0.0.1:8000/patients "HTTP/1.1 200 OK"
+2025-06-16 10:40:16,036 - INFO - HTTP Request: GET http://127.0.0.1:8000/patients/PAT1001 "HTTP/1.1 200 OK"
+2025-06-16 10:40:21,846 - INFO - HTTP Request: GET http://127.0.0.1:8000/patients/PAT10000 "HTTP/1.1 404 Not Found"
+2025-06-16 10:40:26,384 - INFO - Patient created: TEST001
+2025-06-16 10:40:26,384 - INFO - HTTP Request: POST http://127.0.0.1:8000/patients "HTTP/1.1 201 Created"
+2025-06-16 10:40:39,982 - INFO - Patient updated: TEST001
+2025-06-16 10:40:39,986 - INFO - HTTP Request: PUT http://127.0.0.1:8000/patients/TEST001 "HTTP/1.1 200 OK"
+2025-06-16 10:40:45,929 - WARNING - Delete failed: Patient TEST00111 not found.
+2025-06-16 10:40:45,929 - INFO - HTTP Request: DELETE http://127.0.0.1:8000/patients/TEST00111 "HTTP/1.1 404 Not Found"
+2025-06-16 10:42:24,694 - INFO - Patient created: TEST999
+2025-06-16 10:42:29,959 - INFO - Patient updated: TEST999
+2025-06-16 10:42:45,557 - INFO - Patient deleted: TEST999
+2025-06-16 10:47:27,808 - INFO - Patient created: TEST999
+2025-06-16 10:47:37,898 - INFO - Patient updated: TEST999
+2025-06-16 10:47:45,043 - INFO - Patient deleted: TEST999
