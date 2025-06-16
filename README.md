@@ -16,10 +16,9 @@ Project Features
 
 Sample Data Model (CSV)
 
-```csv
+csv
 patient_id,age,sex,BMI,diagnosis_code,sample_taken,blood_pressure,cholesterol_level
 PAT1000,67,Female,17,I75,FALSE,141/79,7.8
-...
 
 Setup Instructions: 
 
